@@ -26,13 +26,9 @@ runs:
         rm -f /home/runner/.cargo/bin/cargo-fmt
       shell: bash
 
-    - if: runner.os != 'Windows'
-      run: |
-        : install rustup if needed
-        if ! command -v rustup &> /dev/null ; then
-          curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --default-toolchain none -y
-          echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
-        fi
+    - run: |
+        curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --default-toolchain none -y
+        echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
       shell: bash
 
     - if: "${{ inputs.components == '' }}"
