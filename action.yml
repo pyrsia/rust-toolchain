@@ -26,7 +26,8 @@ runs:
         rm -f /home/runner/.cargo/bin/cargo-fmt
       shell: bash
 
-    - run: |
+    - if: runner.os != 'Windows'
+      run: |
         : install rustup if needed
         if ! command -v rustup &> /dev/null ; then
           curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --default-toolchain none -y
@@ -38,7 +39,7 @@ runs:
       name: Install Rust toolchain
       id: toolchain
       run: |
-        rustup toolchain install ${{ env.RUST_VERSION }} 
+        rustup toolchain install ${{ env.RUST_VERSION }} --no-self-update
         rustup default ${{ env.RUST_VERSION }}
       shell: bash
 
@@ -46,7 +47,7 @@ runs:
       name: Install Rust toolchain and components
       id: toolchain_components
       run: |
-        rustup toolchain install ${{ env.RUST_VERSION }} --component ${{ inputs.components }} 
+        rustup toolchain install ${{ env.RUST_VERSION }} --component ${{ inputs.components }} --no-self-update
         rustup default ${{ env.RUST_VERSION }}
       shell: bash
 
